@@ -58,7 +58,7 @@ public final class EudiWallet: ObservableObject, @unchecked Sendable {
 	let networkingVp: OpenID4VPNetworking
 
 	/// If not-nil, logging to the specified log file name will be configured
-	public var logFileName: String? { didSet { try? initializeLogging() } }
+	public var logFileName: String?
 	/// transaction logger
 	public var transactionLogger: (any TransactionLogger)?
 	//public static let defaultOpenId4VCIConfig =
@@ -98,6 +98,7 @@ public final class EudiWallet: ObservableObject, @unchecked Sendable {
 		self.networkingVci = OpenID4VCINetworking(networking: networking ?? URLSession.shared)
 		self.networkingVp = OpenID4VPNetworking(networking: networking ?? URLSession.shared)
 		self.logFileName = logFileName
+		try? initializeLogging()
 		let storageServiceObj = storageService ?? KeyChainStorageService(serviceName: self.serviceName, accessGroup: self.accessGroup)
 		storage = StorageManager(storageService: storageServiceObj, modelFactory: self.modelFactory)
 		if let secureAreas, !secureAreas.isEmpty {
